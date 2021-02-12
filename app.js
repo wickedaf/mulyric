@@ -1,8 +1,15 @@
 const searchSong = () => {
+    document.getElementById("lyric-display").innerHTML = "";
+    document.getElementById("search-result").innerHTML = "";
     const query = document.getElementById("search-field").value;
     const url = `https://api.lyrics.ovh/suggest/${query}`;
 
-    fetch(url)
+    fetch(url, {
+        mode: 'cors',
+        headers: {
+          'Access-Control-Allow-Origin':'*'
+        }
+      })
     .then(res => res.json())
     .then(data => displaySongs(data.data))
     .catch(error => console.log(error));
@@ -11,7 +18,6 @@ const searchSong = () => {
 
 const displaySongs = songs =>{
     const searchResult = document.getElementById("search-result");
-    searchResult.innerHTML = '';
     console.log(songs);
     songs.forEach(song => {
         const songDiv = document.createElement("div");
@@ -35,12 +41,7 @@ const displaySongs = songs =>{
 const getLyric = async (artist, title) =>{
     const url = `https://api.lyrics.ovh/v1/${artist}/${title}`;
     try{
-        const res = await fetch(url, {
-            mode: 'cors',
-            headers: {
-              'Access-Control-Allow-Origin':'*'
-            }
-          });
+        const res = await fetch(url);
         const data = await res.json();
         displayLyric(data);
     }catch(error){
