@@ -19,23 +19,28 @@ const searchSong = () => {
 const displaySongs = songs =>{
     const searchResult = document.getElementById("search-result");
     console.log(songs);
-    songs.forEach(song => {
-        const songDiv = document.createElement("div");
-        songDiv.classList = "single-result row align-items-center my-3 p-3";
-        songDiv.innerHTML = `
-            <div class="col-md-9">
-                <h3 class="lyrics-name">${song.title}</h3>
-                <p class="author lead">Album by <span>${song.artist.name}</span></p>
-                <audio controls>
-                <source src="${song.preview}" type="audio/mpeg">
-                </audio>
-            </div>
-            <div class="col-md-3 text-md-right text-center">
-                <button onclick="getLyric('${song.artist.name}', '${song.title}')" class="btn btn-success">Get Lyrics</button>
-            </div>
-        `;
-        searchResult.appendChild(songDiv);
-    });
+    if(songs.length == 0){
+        searchResult.innerHTML = `<h1 class="text-center">Sorry! No song found for this query ☹ </h1>`;
+    }else{
+
+        songs.forEach(song => {
+            const songDiv = document.createElement("div");
+            songDiv.classList = "single-result row align-items-center my-3 p-3";
+            songDiv.innerHTML = `
+                <div class="col-md-9">
+                    <h3 class="lyrics-name">${song.title}</h3>
+                    <p class="author lead">Album by <span>${song.artist.name}</span></p>
+                    <audio controls>
+                    <source src="${song.preview}" type="audio/mpeg">
+                    </audio>
+                </div>
+                <div class="col-md-3 text-md-right text-center">
+                    <button onclick="getLyric('${song.artist.name}', '${song.title}')" class="btn btn-success">Get Lyrics</button>
+                </div>
+            `;
+            searchResult.appendChild(songDiv);
+        });
+    }
 };
 
 const getLyric = async (artist, title) =>{
@@ -60,5 +65,10 @@ const getLyric = async (artist, title) =>{
 const displayLyric = lyric => {
     console.log(lyric);
     const lyricDisplay = document.getElementById("lyric-display");
-    lyricDisplay.innerText = `${lyric.lyrics}`;
+    if(lyric.lyrics == ""){
+        lyricDisplay.innerHTML = `<h1>Sorry! No Lyric found for this song ☹ </h1>`;
+    }else{
+
+        lyricDisplay.innerText = `${lyric.lyrics}`;
+    }
 };
