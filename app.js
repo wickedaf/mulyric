@@ -35,7 +35,7 @@ const displaySongs = songs =>{
                     </audio>
                 </div>
                 <div class="col-md-3 text-md-right text-center">
-                    <button onclick="getLyric('${song.artist.name}', '${song.title}')" class="btn btn-success">Get Lyrics</button>
+                    <button onclick="getLyric(['${song.artist.name}', '${song.title}'])" class="btn btn-success">Get Lyrics</button>
                 </div>
             `;
             searchResult.appendChild(songDiv);
@@ -43,7 +43,11 @@ const displaySongs = songs =>{
     }
 };
 
-const getLyric = async (artist, title) =>{
+const getLyric = async (artisTitleArr) =>{
+    console.log(artisTitleArr);
+        const artist = artisTitleArr[0];
+        const title = artisTitleArr[1];
+
     const url = `https://api.lyrics.ovh/v1/${artist}/${title}`;
     try{
         const res = await fetch(url);
